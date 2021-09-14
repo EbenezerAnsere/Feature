@@ -1,0 +1,18 @@
+Feature Request: Search for Information
+24th August, 2021
+
+OBJECTIVE
+The users can search Spotify playlist by typing any name in the input engine to get the information.
+BACKGROUND 
+This is feature is important so the user can have the opportunity to listen for a few seconds to the songs, to ensure the user is choosing the right version of the song he is looking for. This feature offers a very important aspect of user interactivity and a much more user-friendly experience. The user will know for sure that he found the right song, specially if he is not sure what the name of the song is he is. Sometimes it is by listening to the song that we know for sure it is the one we had in mind all along.
+TECHNICAL DESIGN
+Steps:
+In order to implement this feature we need consult the API documentation and find all the information the “track” object is given us.
+In here we find “preview_url” which is a string, a link to a 30 seconds preview of the track (MP3 format). Or “null” if the sample is not available. 
+Now inside Spotify.js we modify the jsonResponse so the track object also includes a preview of the songs. This is done by adding preview_url: track.preview_url.
+In Track.js we create a method called renderAudio that will return the audio HTML elements for the user to play the preview of the songs. renderAudio will only render the audio elements if the preview for the particular song is available. If not available it will return a message to the user: audio sample unavailable.
+In the render method of the class Track we call renderAudio. Since we know that preview_url is a link we add this link as the source attribute of the source element. This is done by adding src=this.props.track.preview_url to the source HTML element.       
+
+CAVEATS
+The default audio HTML element looks rather ugly and it is making the list of tracks look particularly ‘full’. Not very nice to look at when it comes to design and space. This could be fixed by modifying the CSS file, however styling an audio element is not as easy as most other elements. What could also be a different approach is to add an audio player component that can grab the preview_url of each song in the list and display them in that order. Doing this makes the list of the songs look nice again and instead of having an audio element for each song we have only one audio element that is capable of playing all the songs in the list to the user’s choosing. The chosen approach was taken since it is rather simple to implement and also with the user in mind quite simple to use, since all the user needs to do is to click on the corresponding audio element. 
+
